@@ -1,3 +1,5 @@
+import java.util.Random;
+
 /**
  * Created by codyboppert on 10/25/14.
  */
@@ -13,7 +15,15 @@ public class Board {
         this.layout = layout;
     }
 
+    public Board(int dimension) {
+        layout = new Tile[dimension][dimension];
+    }
+
     public Tile[][] getLayout() { return layout; }
+
+    public void setTile(int i, int j, Tile tile) {
+        layout[i][j] = tile;
+    }
 
     //Each match of bottom and top with the same color adds one to the fitness counter
     public int getFitness() {
@@ -47,5 +57,19 @@ public class Board {
         }
 
         return fitness;
+    }
+
+    public void shuffle(Random random) {
+        int dimension = layout.length;
+        for (int i = 0; i < dimension; i++) {
+            for (int j = 0; j < dimension; j++) {
+                Tile temp = layout[i][j];
+                int rand = random.nextInt(dimension * dimension);
+                int b = rand % dimension;
+                int a = (rand - b) / dimension;
+                layout[i][j] = layout[a][b];
+                layout[a][b] = temp;
+            }
+        }
     }
 }
